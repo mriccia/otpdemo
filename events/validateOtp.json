@@ -1,0 +1,4 @@
+{
+  "httpMethod": "POST",
+  "body": "{\"phoneNumber\": \"phoneNumber1\",\"otp\": \"otp1\"}"
+}
