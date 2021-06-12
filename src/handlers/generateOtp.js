@@ -46,7 +46,12 @@ exports.generateOtpHandler = async (event) => {
     // Send success response to client
     const response = {
         statusCode: 200,
-        body: event.body
+        body: event.body,
+        headers: {
+            "Access-Control-Allow-Headers" : "X-Forwarded-For, Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT"
+        }
     };
 
     // All log statements are written to CloudWatch

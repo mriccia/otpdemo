@@ -32,7 +32,16 @@ exports.validateOtpHandler = async (event) => {
     };
     const data = await docClient.get(params).promise();
     if(!data.Item){
-        throw new Error("Invalid number/OTP combination");
+        console.error("Invalid number/OTP combination");
+        return {
+            statusCode: 500,
+            body: JSON.stringify({message: "Invalid number/OTP combination"}),
+            headers: {
+                "Access-Control-Allow-Headers" : "X-Forwarded-For, Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT"
+            }
+        }
     }
 
     const item = data.Item;
@@ -43,12 +52,26 @@ exports.validateOtpHandler = async (event) => {
     const diff = requestTimestamp - new Date(otpTimestamp);
     const diffInMins = Math.floor((diff / 1000) / 60);
     if (diffInMins > 5) {
-        throw new Error("OTP has expired");
+        console.error("OTP has expired");
+        return {
+            statusCode: 500,
+            body: JSON.stringify({message: "OTP has expired"}),
+            headers: {
+                "Access-Control-Allow-Headers" : "X-Forwarded-For, Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT"
+            }
+        };
     }
 
     const response = {
         statusCode: 200,
-        body: JSON.stringify({message: "Token accepted"})
+        body: JSON.stringify({message: "Token accepted"}),
+        headers: {
+            "Access-Control-Allow-Headers" : "X-Forwarded-For, Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT"
+        }
     };
 
     // All log statements are written to CloudWatch
